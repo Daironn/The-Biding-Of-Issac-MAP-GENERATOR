@@ -16,7 +16,7 @@ std::ostream & operator<<(std::ostream & os, Room & obj)
 	else if (obj.get_type() == Arena) {
 		type_char = 'A';
 	}
-	else if (obj.get_type() == RedArena) {
+	else if (obj.get_type() == Shop) {
 		type_char = 'R';
 	}
 	else if (obj.get_type() == Start) {

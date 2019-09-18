@@ -1,15 +1,16 @@
 #pragma once
 #include <iostream>
 #include <string>
-enum types{
+enum types {
 	None,
-	Possible,
 	Normal,
 	Curse,
 	Boss,
 	Arena,
-	RedArena,
-	Start
+	Shop,
+	Start,
+	Treasure,
+	Possible
 };
 
 class Room
@@ -22,8 +23,8 @@ public:
 
 	friend std::ostream & operator<<(std::ostream & os,const Room & obj);
 public:
-	inline types get_type() const;
-	inline void set_type(types type);
+	types get_type() const;
+	void set_type(types type);
 private:
 
 	types type;

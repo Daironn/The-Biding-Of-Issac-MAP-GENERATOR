@@ -9,38 +9,38 @@ Map::Map(level level_type):
 {
 	if (type_of_level == Basement) {
 
-		map_size_x = 10;
-		map_size_y = 6;
+		map_size_x = 15;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 	else if (type_of_level == Cave) {
 
-		map_size_x = 11;
-		map_size_y = 7;
+		map_size_x = 15;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 	else if (type_of_level == Necro) {
 
-		map_size_x = 12;
-		map_size_y = 8;
+		map_size_x = 15;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 	else if (type_of_level == Womb) {
 
-		map_size_x = 13;
-		map_size_y = 9;
+		map_size_x = 15;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 	else if (type_of_level == Catedral) {
 
-		map_size_x = 14;
-		map_size_y = 10;
+		map_size_x = 15;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 	else if (type_of_level == Chest) {
 
 		map_size_x = 15;
-		map_size_y = 11;
+		map_size_y = 15;
 		this->room_limiter_set(type_of_level);
 	}
 
@@ -52,12 +52,17 @@ Map::Map(level level_type):
 		map_body.push_back(v);
 	}
 	this->create_map_default();
+	this->set_possibility();
+	this->fill_empty_space();
 }
 
 void Map::draw_map() const
 {
 	for (int i = 0; i < map_size_y; i++) {
 		for (int j = 0; j < map_size_x; j++) {
+			if (map_body[i][j].get_type() == None)
+				std::cout << " ";
+			else
 			std::cout << map_body[i][j].get_type();
 		}
 		std::cout << std::endl;
@@ -213,79 +218,254 @@ void Map::room_limiter_set(level type_of_level)
 	}
 }
 
-bool Map::check_possibility(int x, int y)
+void Map::set_possibility()
 {
-	
-	if (map_body[x][y].get_type() == Normal) {
+	for (int y = 0; y < 15; y++) {
+		for (int x = 0; x < 15; x++) {
 
-		if (x == map_size_x) {
+			if (map_body[y][x].get_type() == Normal) {
 
+				if (x == map_size_x) {
+
+					if (map_body[y - 1][x].get_type() == None) {
+
+						if (analise(y - 1, x) == true) {
+
+							map_body[y - 1][x].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y + 1][x].get_type() == None) {
+
+						if (analise(y + 1, x) == true) {
+
+							map_body[y + 1][x].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y][x - 1].get_type() == None) {
+
+						if (analise(y, x - 1) == true) {
+
+							map_body[y][x - 1].set_type(Possible);
+
+						}
+					}
+				}
+
+
+
+				else if (x == 0) {
+
+					if (map_body[y - 1][x].get_type() == None) {
+
+						if (analise(y - 1, x) == true) {
+
+							map_body[y - 1][x].set_type(Possible);
+
+						}
+					}
+
+					else if (map_body[y + 1][x].get_type() == None) {
+
+						if (analise(y + 1, x) == true) {
+
+							map_body[y + 1][x].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y][x + 1].get_type() == None) {
+
+						if (analise(y, x + 1) == true) {
+
+							map_body[y][x + 1].set_type(Possible);
+
+						}
+					}
+				}
+
+
+
+				else if (y == map_size_y) {
+
+					if (map_body[y][x + 1].get_type() == None) {
+
+						if (analise(y, x + 1) == true) {
+
+							map_body[y][x + 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y][x - 1].get_type() == None) {
+
+						if (analise(y, x - 1) == true) {
+
+							map_body[y][x - 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y - 1][x].get_type() == None) {
+
+						if (analise(y - 1,x) == true) {
+
+							map_body[y - 1][x].set_type(Possible);
+
+						}
+					}
+				}
+
+
+				else if (y == 0) {
+
+					if (map_body[y][x + 1].get_type() == None) {
+
+						if (analise(y, x + 1) == true) {
+
+							map_body[y][x + 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y][x - 1].get_type() == None) {
+
+						if (analise(y, x - 1) == true) {
+
+							map_body[y][x - 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y + 1][x].get_type() == None) {
+
+						if (analise(y + 1, x) == true) {
+
+							map_body[y + 1][x].set_type(Possible);
+
+						}
+					}
+
+				}
+				else {
+
+					if (map_body[y][x + 1].get_type() == None) {
+
+						if (analise(y, x + 1) == true) {
+
+							map_body[y][x + 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y][x - 1].get_type() == None) {
+
+						if (analise(y, x - 1) == true) {
+
+							map_body[y][x - 1].set_type(Possible);
+
+						}
+					}
+					else if (map_body[y + 1][x].get_type() == None) {
+
+						if (analise(y + 1, x) == true) {
+
+							map_body[y + 1][x].set_type(Possible);
+							room_limiter["Possible"]++;
+
+						}
+					}
+					else if (map_body[y - 1][x].get_type() == None) {
+
+						if (analise(y - 1, x) == true) {
+
+							map_body[y - 1][x].set_type(Possible);
+
+						}
+					}
+				}
+			}
 		}
-		else if (x == 0) {
-
-		}
-		else if (y == map_size_y) {
-
-			if (map_body[x + 1][y].get_type() == None) {
-
-				if (analise(x + 1, y) == true) {
-
-					map_body[x + 1][y].set_type(Possible);
-
-				}
-			}
-			else if (map_body[x - 1][y].get_type() == None) {
-
-				if (analise(x - 1, y) == true) {
-
-					map_body[x - 1][y].set_type(Possible);
-
-				}
-			}
-			else if (map_body[x][y + 1].get_type() == None) {
-
-				if (analise(x, y + 1) == true) {
-
-					map_body[x + 1][y - 1].set_type(Possible);
-
-				}
-			}
-		}
-		else if (y == 0) {
-
-			if (map_body[x+1][y].get_type() == None) {
-
-				if (analise(x + 1, y) == true) {
-
-					map_body[x + 1][y].set_type(Possible);
-
-				}
-			}
-			else if (map_body[x - 1][y].get_type() == None) {
-
-				if (analise(x - 1, y) == true) {
-
-					map_body[x - 1][y].set_type(Possible);
-
-				}
-			}
-			else if (map_body[x][y + 1].get_type() == None) {
-
-				if (analise(x, y + 1) == true) {
-
-					map_body[x + 1][y + 1].set_type(Possible);
-
-				}
-			}
-
-		}
-		else {
-			std::cout << "TODO";
-		}
-
 	}
 }
 
+bool Map::analise(int y, int x) 
+{
+	int noneCounter = 0;
+	if (x == map_size_x) {
+		return false;
+	}
+	else if (x == 0) {
+		return false;
+	}
+	else if (y == map_size_y) {
+		return false;
+	}
+	else if (y == 0) {
+		return false;
+	}
+	else {
+		if (map_body[y + 1][x].get_type() == None) {
+			noneCounter++;
+		}
+		if (map_body[y - 1][x].get_type() == None) {
+			noneCounter++;
+		}
+		if (map_body[y][x + 1].get_type() == None) {
+			noneCounter++;
+		}
+		if (map_body[y][x - 1].get_type() == None) {
+			noneCounter++;
+		}
 
+		if (noneCounter == 3) {
+			return true;
+		}
+	}
+	return false;
+}
 
+void Map::fill_empty_space()
+{
+	srand(time(NULL));
+	int curse_chance = rand() % 2;
 
+	srand(time(NULL));
+	int shop_above_necro = rand() % 2;
+
+	if (this->type_of_level < 4) {
+		for (int y = 0; y < 15; y++) {
+			for (int x = 0; x < 15; x++) {
+
+				if (map_body[y][x].get_type() == Possible
+					&& room_limiter["Boss"] == 1) {
+
+					room_limiter["Boss"]--;
+					map_body[y][x].set_type(Boss);
+				}
+				else if (map_body[y][x].get_type() == Possible
+					&& room_limiter["Treasure"] == 1) {
+
+					room_limiter["Treasure"]--;
+					map_body[y][x].set_type(Treasure);
+				}
+
+				else if (map_body[y][x].get_type() == Possible
+					&& room_limiter["Curse"] == 1
+					&& curse_chance == 0) {
+
+					room_limiter["Curse"]--;
+					map_body[y][x].set_type(Curse);
+				}
+
+				else if (map_body[y][x].get_type() == Possible
+					&& room_limiter["Shop"] == 1) {
+
+					room_limiter["Shop"]--;
+					map_body[y][x].set_type(Shop);
+				}
+				else if (map_body[y][x].get_type() == Possible
+					&& room_limiter["Arena"] == 1) {
+
+					room_limiter["Arena"]--;
+					map_body[y][x].set_type(Arena);
+				}
+			}
+		}
+	}
+}
