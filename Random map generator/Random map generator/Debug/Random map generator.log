@@ -1,0 +1,12 @@
+﻿  Map.cpp
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(47): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(49): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(59): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(60): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(76): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(95): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(132): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
+  Random map generator.cpp
+  Room.cpp
+  Generowanie kodu...
+c:\users\daorin\source\repos\random map generator\random map generator\map.cpp(238): error C4716: "Map::check_possibility": musi zwracać wartość
