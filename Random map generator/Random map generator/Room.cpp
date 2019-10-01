@@ -3,30 +3,30 @@
 
 std::ostream & operator<<(std::ostream & os, Room & obj)
 {
-	char type_char;
+	char type_char[1];
 	if (obj.get_type() == Normal) {
-		type_char = 'N';
+		type_char[0] = 'N';
 	}
 	else if (obj.get_type() == Curse) {
-		type_char = 'C';
+		type_char[0] = 'C';
 	}
 	else if (obj.get_type() == Boss) {
-		type_char = 'B';
+		type_char[0] = 'B';
 	}
 	else if (obj.get_type() == Arena) {
-		type_char = 'A';
+		type_char[0] = 'A';
 	}
 	else if (obj.get_type() == Shop) {
-		type_char = 'R';
+		type_char[0] = 'R';
 	}
 	else if (obj.get_type() == Start) {
-		type_char = 'S';
+		type_char[0] = 'S';
 	}
 	else {
-		type_char = 'E';
+		type_char[0] = 'E';
 	}
 
-	os << type_char;
+	os << type_char[0];
 
 	return os;
 }
