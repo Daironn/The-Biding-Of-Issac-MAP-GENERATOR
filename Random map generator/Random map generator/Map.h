@@ -1,5 +1,6 @@
 #pragma once
 #include "Room.h"
+#include "Vector2i.h"
 #include <vector>
 #include <map>
 
@@ -31,6 +32,8 @@ private:
 private:
 
 	std::vector<std::vector<Room>> map_body;
+	std::vector<Vector2i> possible_position;
+
 	std::map<std::string, int> room_limiter{
 		{"Treasure", 1},
 		{"Curse", 1},
@@ -39,8 +42,10 @@ private:
 		{"Arena",1},
 		{"Start", 1},
 		{"Secret", 1},
+		{"SSecret", 1},
 		{"Normal",0},
 		{"Possible",0},
+		{"AWWN",0} // all what we need, the sum of requied rooms
 	};
 private:
 
@@ -52,7 +57,12 @@ private:
 	void set_possibility();
 	void fill_empty_poss();
 
-	types analise_poss(int x, int y);
+	
+	void search_for_possibility(ROOM::types type_of_room );
+
+	ROOM::types analise_poss_v2(int y, int x, ROOM::types type_of_room);
+
+	ROOM::types give_me_a_reason();
 
 
 

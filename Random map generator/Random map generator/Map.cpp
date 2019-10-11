@@ -15,20 +15,21 @@ Map::Map(level level_type):
 	for (int i = 0; i < map_size_y; i++) {
 		std::vector<Room> v;
 		for (int j = 0; j < map_size_x; j++) {
-			v.push_back(Room(None, i, j));
+			v.push_back(Room(ROOM::None, i, j));
 		}
 		map_body.push_back(v);
 	}
 	this->create_map_default();
-	this->set_possibility();
-	this->fill_empty_space();
+	this->search_for_possibility(ROOM::Possible);
+	this->fill_empty_poss();
+	this->search_for_possibility(ROOM::Secret);
 }
 
 void Map::draw_map() const
 {
 	for (int i = 0; i < map_size_y; i++) {
 		for (int j = 0; j < map_size_x; j++) {
-			if (map_body[i][j].get_type() == None)
+			if (map_body[i][j].get_type() == ROOM::None)
 				std::cout << " ";
 			else
 			std::cout << map_body[i][j].get_type();
@@ -42,7 +43,7 @@ void Map::create_map_default()
 	unsigned start_positionX = map_size_y / 2;
 	unsigned start_positionY = map_size_y / 2;
 
-	map_body[start_positionY][start_positionX].set_type(Start);
+	map_body[start_positionY][start_positionX].set_type(ROOM::Start);
 	
 	int current_positionX = start_positionX;
 	int current_positionY = start_positionY;
@@ -77,11 +78,11 @@ void Map::create_map_default()
 					current_positionX -= 1;
 				}
 				else {
-					if (map_body[current_positionY][current_positionX].get_type() == None) {
+					if (map_body[current_positionY][current_positionX].get_type() == ROOM::None) {
 
-						map_body[current_positionY][current_positionX].set_type(Normal);
+						map_body[current_positionY][current_positionX].set_type(ROOM::Normal);
 
-						room_limiter["ALL"] -= 1;
+
 						room_limiter["Normal"] -= 1;
 					}
 				}
@@ -100,11 +101,11 @@ void Map::create_map_default()
 					current_positionX += 1;
 				}
 				else {
-					if (map_body[current_positionY][current_positionX].get_type() == None) {
+					if (map_body[current_positionY][current_positionX].get_type() == ROOM::None) {
 
-						map_body[current_positionY][current_positionX].set_type(Normal);
+						map_body[current_positionY][current_positionX].set_type(ROOM::Normal);
 
-						room_limiter["ALL"] -= 1;
+
 						room_limiter["Normal"] -= 1;
 					}
 				}
@@ -122,11 +123,11 @@ void Map::create_map_default()
 					current_positionY -= 1;
 				}
 				else {
-					if (map_body[current_positionY][current_positionX].get_type() == None) {
+					if (map_body[current_positionY][current_positionX].get_type() == ROOM::None) {
 
-						map_body[current_positionY][current_positionX].set_type(Normal);
+						map_body[current_positionY][current_positionX].set_type(ROOM::Normal);
 
-						room_limiter["ALL"] -= 1;
+
 						room_limiter["Normal"] -= 1;
 					}
 				}
@@ -144,11 +145,11 @@ void Map::create_map_default()
 					current_positionY += 1;
 				}
 				else {
-					if (map_body[current_positionY][current_positionX].get_type() == None) {
+					if (map_body[current_positionY][current_positionX].get_type() == ROOM::None) {
 
-						map_body[current_positionY][current_positionX].set_type(Normal);
+						map_body[current_positionY][current_positionX].set_type(ROOM::Normal);
 
-						room_limiter["ALL"] -= 1;
+
 						room_limiter["Normal"] -= 1;
 					}
 				}
@@ -222,80 +223,179 @@ void Map::set_possibility()
 	for (int y = 0; y < map_size_y; y++) {
 		for (int x = 0; x < map_size_x; x++) {
 
-			if (map_body[y][x].get_type() == Normal) {
+			if (map_body[y][x].get_type() == ROOM::Normal) {
 
 
-				if (analise(y, x + 1) == Possible) {
+				if (analise_poss_v2(y, x + 1, ROOM::Possible) == ROOM::Possible) {
 
-					map_body[y][x + 1].set_type(Possible);
-				}
-				else if (analise(y, x + 1) == Secret) {
-
-					map_body[y][x + 1].set_type(Secret);
+					map_body[y][x + 1].set_type(ROOM::Possible);
 				}
 				////////////////////////////////////////////RIGHT
-				 if (analise(y, x - 1) == Possible) {
+				if (analise_poss_v2(y, x - 1, ROOM::Possible) == ROOM::Possible) {
 
-					map_body[y][x - 1].set_type(Possible);
-				}
-				else if (analise(y, x - 1) == Secret) {
-
-					map_body[y][x - 1].set_type(Secret);
+					map_body[y][x - 1].set_type(ROOM::Possible);
 				}
 				///////////////////////////////////////////////LEFT
-				 if (analise(y + 1, x) == Possible) {
+				 if (analise_poss_v2(y + 1, x, ROOM::Possible) == ROOM::Possible) {
 
-					map_body[y + 1][x].set_type(Possible);
-				}
-				else if (analise(y + 1, x) == Secret) {
-
-					map_body[y + 1][x].set_type(Secret);
+					map_body[y + 1][x].set_type(ROOM::Possible);
 				}
 				///////////////////////////////////////////UP
-				 if (analise(y - 1, x) == Possible) {
+				 if (analise_poss_v2(y - 1, x, ROOM::Possible) == ROOM::Possible) {
 
-					map_body[y - 1][x].set_type(Possible);
-				}
-				else if (analise(y - 1, x) == Secret) {
-
-					map_body[y - 1][x].set_type(Secret);
+					map_body[y - 1][x].set_type(ROOM::Possible);
 				}
 				///////////////////////////////////////////////DOWN
 			}
-
 		}
 	}
 }
 
-types Map::analise(int y, int x) 
+void Map::fill_empty_poss()
 {
-	unsigned NoneCounter = 0;
-
-	if (map_body[y][x].get_type() == None) {
-
-
-
-		if (map_body[y][x + 1].get_type() == None)
-			NoneCounter++;
-		if (map_body[y][x - 1].get_type() == None)
-			NoneCounter++;
-		if (map_body[y + 1][x].get_type() == None)
-			NoneCounter++;
-		if (map_body[y - 1][x].get_type() == None) // dodaæ sprawdzanie boss roomow
-			NoneCounter++;
-
-		if (NoneCounter == 3) {
-			room_limiter["Posible"]++;
-			return Possible;
-		}
-		else
-			return None;
-	}
-}
-
-void Map::fill_empty_space()
-{
-	bool stopu = false;
 	srand(time(NULL));
 
+	while (room_limiter["Possible"] != 0) {
+
+		unsigned chosen_one = rand() % possible_position.size();
+		
+		ROOM::types type = this->give_me_a_reason();
+
+		if (map_body[possible_position[chosen_one].y()]
+			[possible_position[chosen_one].x()].get_type() == ROOM::Possible) {
+
+			map_body[possible_position[chosen_one].y()]
+				[possible_position[chosen_one].x()].set_type(type);
+
+			room_limiter["Possible"]--;
+		}
+		else continue;
+
+	}
+
+}
+
+
+ROOM::types Map::give_me_a_reason()
+{
+	int curse_chance = rand() % 5;
+	int arena_chance = rand() % 5;
+
+	if (room_limiter["Boss"] != 0) {
+		room_limiter["Boss"]--;
+		return ROOM::Boss;
+	}
+
+	else if (room_limiter["Treasure"] != 0) {
+		room_limiter["Treasure"]--;
+		return ROOM::Treasure;
+	}
+
+	else if (room_limiter["SSecret"] != 0) {
+		room_limiter["SSecret"]--;
+		return ROOM::SSecret;
+	}
+
+	else if (room_limiter["Curse"] !=0) {
+
+		if (curse_chance == 2 || curse_chance || 4) {
+			room_limiter["Curse"]--;
+			return ROOM::Curse;
+		}
+		else
+			room_limiter["Curse"]--;
+	}
+
+	else if (room_limiter["Arena"] != 0) {
+
+		if (arena_chance == 1 || arena_chance || 3) {
+			room_limiter["Arena"]--;
+			return ROOM::Arena;
+		}
+		else
+			room_limiter["Arena"]--;
+	}
+
+	else if (room_limiter["Secret"] != 0) {
+
+	}
+
+	else {
+		return ROOM::None;
+	}
+}
+
+
+ROOM::types Map::analise_poss_v2(int y, int x, ROOM::types type_of_room)
+{
+	{
+		unsigned NoneCounter = 0;
+
+		if (map_body[y][x].get_type() == ROOM::None) {
+
+
+
+			if (map_body[y][x + 1].get_type() == ROOM::None)
+				NoneCounter++;
+			if (map_body[y][x - 1].get_type() == ROOM::None)
+				NoneCounter++;
+			if (map_body[y + 1][x].get_type() == ROOM::None)
+				NoneCounter++;
+			if (map_body[y - 1][x].get_type() == ROOM::None) // dodaæ sprawdzanie boss roomow
+				NoneCounter++;
+
+			if (type_of_room == ROOM::Possible) {
+				if (NoneCounter == 3) {
+
+					room_limiter["Possible"]++;
+					possible_position.push_back(Vector2i(y, x));
+					return type_of_room;
+				}
+			}
+			if (type_of_room == ROOM::Secret) {
+				if (NoneCounter < 3) {
+
+					room_limiter["Secret"]++;
+					possible_position.push_back(Vector2i(y, x));
+					return type_of_room;
+				}
+				
+			}
+			else return ROOM::None;
+		}
+	}
+}
+
+void Map::search_for_possibility(ROOM::types type_of_room)
+{
+
+	for (int y = 0; y < map_size_y; y++) {
+		for (int x = 0; x < map_size_x; x++) {
+
+			if (map_body[y][x].get_type() == ROOM::Normal) {
+
+
+				if (analise_poss_v2(y, x + 1, type_of_room) == type_of_room) {
+
+					map_body[y][x + 1].set_type(type_of_room);
+				}
+				////////////////////////////////////////////RIGHT
+				if (analise_poss_v2(y, x - 1, type_of_room) == type_of_room) {
+
+					map_body[y][x - 1].set_type(type_of_room);
+				}
+				///////////////////////////////////////////////LEFT
+				if (analise_poss_v2(y + 1, x, type_of_room) == type_of_room) {
+
+					map_body[y + 1][x].set_type(type_of_room);
+				}
+				///////////////////////////////////////////UP
+				if (analise_poss_v2(y - 1, x, type_of_room) == type_of_room) {
+
+					map_body[y - 1][x].set_type(type_of_room);
+				}
+				///////////////////////////////////////////////DOWN
+			}
+		}
+	}
 }
