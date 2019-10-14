@@ -154,6 +154,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="Vector2i.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp" />
@@ -165,6 +166,7 @@
     </ClCompile>
     <ClCompile Include="Random map generator.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Vector2i.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

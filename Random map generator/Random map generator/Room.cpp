@@ -3,45 +3,45 @@
 
 std::ostream & operator<<(std::ostream & os, Room & obj)
 {
-	char type_char;
-	if (obj.get_type() == Normal) {
-		type_char = 'N';
+	char type_char[1];
+	if (obj.get_type() == ROOM::Normal) {
+		type_char[0] = 'N';
 	}
-	else if (obj.get_type() == Curse) {
-		type_char = 'C';
+	else if (obj.get_type() == ROOM::Curse) {
+		type_char[0] = 'C';
 	}
-	else if (obj.get_type() == Boss) {
-		type_char = 'B';
+	else if (obj.get_type() == ROOM::Boss) {
+		type_char[0] = 'B';
 	}
-	else if (obj.get_type() == Arena) {
-		type_char = 'A';
+	else if (obj.get_type() == ROOM::Arena) {
+		type_char[0] = 'A';
 	}
-	else if (obj.get_type() == RedArena) {
-		type_char = 'R';
+	else if (obj.get_type() == ROOM::Shop) {
+		type_char[0] = 'R';
 	}
-	else if (obj.get_type() == Start) {
-		type_char = 'S';
+	else if (obj.get_type() == ROOM::Start) {
+		type_char[0] = 'S';
 	}
 	else {
-		type_char = 'E';
+		type_char[0] = 'E';
 	}
 
-	os << type_char;
+	os << type_char[0];
 
 	return os;
 }
 
-Room::Room(types type, int loc_x, int loc_y):
+Room::Room(ROOM::types type, int loc_x, int loc_y):
 	type(type), location_x(loc_x),location_y(loc_y)
 {
 }
 
-types Room::get_type() const
+ROOM::types Room::get_type() const
 {
 	return this->type;
 }
 
-void Room::set_type(types type)
+void Room::set_type(ROOM::types type)
 {
 	this->type = type;
 }

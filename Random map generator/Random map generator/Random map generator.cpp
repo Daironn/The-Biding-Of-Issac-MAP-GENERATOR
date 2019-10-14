@@ -5,7 +5,7 @@
 
 int main()
 {
-	Map siel(Basement);
+	Map siel(Necro);
 	siel.draw_map();
 	system("PAUSE");
 }

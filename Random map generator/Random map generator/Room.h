@@ -1,34 +1,45 @@
 #pragma once
 #include <iostream>
 #include <string>
-enum types{
-	None,
-	Possible,
-	Normal,
-	Curse,
-	Boss,
-	Arena,
-	RedArena,
-	Start
-};
 
-class Room
-{
-public:
+namespace ROOM {
 
-	Room(types type, int loc_x,int loc_y);
-	~Room() = default ;
-public:
+	enum types {
+		Start,
+		Normal,
+		Boss,
+		Treasure,
+		Shop,
+		Curse,
+		Arena,
+		Secret,
+		SSecret,
+		None,
+		Possible
+	};
+}
 
-	friend std::ostream & operator<<(std::ostream & os,const Room & obj);
-public:
-	inline types get_type() const;
-	inline void set_type(types type);
-private:
+	class Room
+	{
+	public:
 
-	types type;
-	unsigned location_x;
-	unsigned location_y;
+		Room(ROOM::types type, int loc_x, int loc_y);
+		~Room() = default;
 
-};
+	public:
+
+		friend std::ostream & operator<<(std::ostream & os, const Room & obj);
+
+	public:
+
+		ROOM::types get_type() const;
+		void set_type(ROOM::types type);
+
+	private:
+
+		ROOM::types type;
+		unsigned location_x;
+		unsigned location_y;
+
+	};
 
